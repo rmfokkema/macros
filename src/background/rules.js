@@ -1,3 +1,4 @@
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 import { Event } from '../shared/events';
 import { validateArrayOfRules } from './rule-validation';
 
@@ -158,7 +159,7 @@ class RuleCollection{
 		await this.ensureLoaded();
 		const {id, ...rest} = this.rules.find(r => r.id === ruleId);
 		const json = JSON.stringify(rest);
-		
+		return compressToEncodedURIComponent(json);
 	}
 	async uploadRulesJson(jsonString){
 		let content;

@@ -14,7 +14,10 @@
 			v-on:drop="onDrop($event)"
 			v-bind:class="{'drop-zone': isDraggedOver, 'dragged-over': isDraggedOver}">
 			<div class="rule-view-inner">
-				<div class="row-part left">{{name}}<span v-if="isDraft" class="draft-rule-notification">draft</span></div>
+				<div class="row-part left">
+					<div>{{name}}<span v-if="isDraft" class="draft-rule-notification">draft</span></div>
+					<div class="rule-message" v-if="message">{{message}}</div>
+				</div>
 				<div class="row-part">
 					<div class="rule-button-row">
 						<div class="button" v-on:click="onExecuteClicked()" v-if="canExecute && !isExecuting && !hasExecuted">
@@ -32,7 +35,7 @@
 					</div>
 					<div class="rule-button-row">
 						<div class="button" v-on:click="onShareClicked()" v-if="shareable">
-							<span class="fa fa-share"></span>
+							<span class="fa fa-link"></span>
 						</div>
 						<div class="button" v-on:click="onEditClicked()" v-if="editable">
 							<span class="fa fa-edit"></span>
@@ -50,6 +53,7 @@
 			v-bind:has-executed="hasExecuted"
 			v-bind:shareable="true"
 			v-bind:editable="editable"
+			v-bind:message="temporaryMessage"
 			v-on:suggestion-dropped="onDrop()"
 			v-on:execute-clicked="onExecuteClicked()"
 			v-on:edit-clicked="onEditClicked()"

@@ -51,7 +51,8 @@ Vue.component('rule-view', {
 		hasExecuted: Boolean,
 		editable: Boolean,
 		isDraft: Boolean,
-		shareable: Boolean
+		shareable: Boolean,
+		message: String
 	},
 	methods: {
 		onExecuteClicked(){
@@ -238,7 +239,8 @@ new Vue({
 							currentExecutionId: undefined,
 							ownCurrentExecutionId: undefined,
 							hasExecuted: false,
-							cancellationToken: new CancellationToken()
+							cancellationToken: new CancellationToken(),
+							temporaryMessage: undefined
 						};
 					},
 					watch: {
@@ -288,8 +290,16 @@ new Vue({
 							const {suggestionId} = this.dragManager.stopDragging();
 							macros.requestToAddSuggestionToRule(this.rule.id, this.navigationId, suggestionId);
 						},
-						onShareClicked(){
-							
+						async onShareClicked(){
+							const url = await macros.getUrlWithEncodedRule(this.rule.id, this.navigationId);
+							await macros.page.copyToClipboard(url);
+							this.setTemporaryMessage('copied to clipboard');
+						},
+						setTemporaryMessage(msg){
+							this.temporaryMessage = msg;
+							setTimeout(() => {
+								this.temporaryMessage = undefined;
+							}, 2000);
 						}
 					}
 				},
