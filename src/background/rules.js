@@ -154,6 +154,12 @@ class RuleCollection{
 		}
 		return result;
 	}
+	async getEncodedRuleForLink(ruleId){
+		await this.ensureLoaded();
+		const {id, ...rest} = this.rules.find(r => r.id === ruleId);
+		const json = JSON.stringify(rest);
+		
+	}
 	async uploadRulesJson(jsonString){
 		let content;
 		try{

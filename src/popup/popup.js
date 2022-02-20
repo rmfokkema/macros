@@ -50,7 +50,8 @@ Vue.component('rule-view', {
 		isExecuting: Boolean,
 		hasExecuted: Boolean,
 		editable: Boolean,
-		isDraft: Boolean
+		isDraft: Boolean,
+		shareable: Boolean
 	},
 	methods: {
 		onExecuteClicked(){
@@ -77,6 +78,9 @@ Vue.component('rule-view', {
 			dragEvent.preventDefault();
 			this.$emit('suggestion-dropped');
 			this.isDraggedOver = false;
+		},
+		onShareClicked(){
+			this.$emit('share-clicked');
 		}
 	}
 });
@@ -283,6 +287,9 @@ new Vue({
 						onDrop(){
 							const {suggestionId} = this.dragManager.stopDragging();
 							macros.requestToAddSuggestionToRule(this.rule.id, this.navigationId, suggestionId);
+						},
+						onShareClicked(){
+							
 						}
 					}
 				},
